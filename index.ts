@@ -1,51 +1,57 @@
-import {
-  BackgroundColor,
-  GlobalVar,
-  Parent,
-  Scenes,
-  WebGL,
-} from '@phaserjs/phaser/config';
+import * as Phaser from 'phaser';
+import { PRINCESS } from './assets/assets';
+var config = {
+  type: Phaser.AUTO,
+  width: 800,
+  height: 600,
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 200 },
+    },
+  },
+  scene: {
+    preload: preload,
+    create: create,
+  },
+};
 
-import { AddChild } from '@phaserjs/phaser/display/';
+var game = new Phaser.Game(config);
 
-import { Between } from '@phaserjs/phaser/math';
+function preload() {
+  this.load.setBaseURL('http://labs.phaser.io');
 
-import { CreateGame } from '@phaserjs/phaser/CreateGame';
+  this.textures.once(
+    'addtexture',
+    function () {
+      this.add.image(400, 300, 'logo');
+    },
+    this
+  );
 
-import { ImageFile } from '@phaserjs/phaser/loader/files/ImageFile';
+  this.textures.addBase64('logo', PRINCESS);
 
-import { Scene } from '@phaserjs/phaser/scenes/Scene';
-import { Sprite } from '@phaserjs/phaser/gameobjects/';
-import { StaticWorld } from '@phaserjs/phaser/world/StaticWorld';
-
-class Demo extends Scene {
-  constructor() {
-    super();
-
-    this.preload();
-  }
-
-  async preload() {
-    await ImageFile('logo', 'assets/logo.png');
-
-    const world = new StaticWorld(this);
-
-    const x = Between(200, 600);
-    const y = Between(100, 300);
-
-    const logo = new Sprite(x, y, 'logo');
-
-    AddChild(world, logo);
-  }
+  this.load.image('sky', 'assets/skies/space3.png');
+  // this.load.image('logo', 'assets/sprites/phaser3-logo.png');
+  this.load.image('red', 'assets/particles/red.png');
 }
-console.log(CreateGame);
-/*
-CreateGame(
-  WebGL(),
-  Parent('gameParent'),
-  GlobalVar('Phaser4'),
-  BackgroundColor(0x2d2d2d),
-  Scenes(Demo)
-);
 
-*/
+function create() {
+  this.add.image(400, 300, 'sky');
+
+  var particles = this.add.particles('red');
+
+  var emitter = particles.createEmitter({
+    speed: 100,
+    scale: { start: 1, end: 0 },
+    blendMode: 'ADD',
+  });
+
+  var logo = this.physics.add.image(400, 100, 'logo');
+
+  logo.setVelocity(100, 200);
+  logo.setBounce(1, 1);
+  logo.setCollideWorldBounds(true);
+
+  emitter.startFollow(logo);
+}
