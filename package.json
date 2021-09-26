@@ -1,0 +1,9 @@
+{
+  "name": "typescript",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@phaserjs/phaser": "^0.1.19",
+    "nosleep.js": "^0.12.0"
+  }
+}
