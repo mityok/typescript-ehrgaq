@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@phaserjs/phaser": "^0.1.19",
-    "nosleep.js": "^0.12.0"
+    "bitecs": "0.3.21",
+    "nosleep.js": "0.12.0"
   }
 }
