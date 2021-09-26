@@ -25,7 +25,7 @@ function preload() {
   this.textures.once(
     'addtexture',
     function () {
-      this.add.image(400, 300, 'logo');
+      this.add.image(40, 30, 'logo');
     },
     this
   );
