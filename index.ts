@@ -1,41 +1,51 @@
-import * as Phaser from '@phaserjs/phaser';
-
 import {
   BackgroundColor,
+  GlobalVar,
   Parent,
   Scenes,
   WebGL,
 } from '@phaserjs/phaser/config';
 
-import { AddTween } from '@phaserjs/phaser/motion/tween/nano/AddTween';
+import { AddChild } from '@phaserjs/phaser/display/';
 
-class Demo extends Phaser.Scene {
+import { Between } from '@phaserjs/phaser/math';
+
+import { CreateGame } from '@phaserjs/phaser/CreateGame';
+
+import { ImageFile } from '@phaserjs/phaser/loader/files/ImageFile';
+
+import { Scene } from '@phaserjs/phaser/scenes/Scene';
+import { Sprite } from '@phaserjs/phaser/gameobjects/';
+import { StaticWorld } from '@phaserjs/phaser/world/StaticWorld';
+
+class Demo extends Scene {
   constructor() {
     super();
 
-    const world = new Phaser.World.StaticWorld(this);
+    this.preload();
+  }
 
-    const loader = new Phaser.Loader.Loader();
+  async preload() {
+    await ImageFile('logo', 'assets/logo.png');
 
-    loader.add(Phaser.Loader.Files.ImageFile('logo', 'assets/logo.png'));
+    const world = new StaticWorld(this);
 
-    loader.start().then(() => {
-      const logo = new Phaser.GameObjects.Sprite(400, 100, 'logo').setRotation(
-        0.3
-      );
+    const x = Between(200, 600);
+    const y = Between(100, 300);
 
-      AddTween(logo)
-        .to(3000, { y: 400, rotation: 0 })
-        .easing(Phaser.Math.Easing.Bounce.Out);
+    const logo = new Sprite(x, y, 'logo');
 
-      Phaser.Display.AddChildren(world, logo);
-    });
+    AddChild(world, logo);
   }
 }
-
-new Phaser.Game(
+console.log(CreateGame);
+/*
+CreateGame(
   WebGL(),
   Parent('gameParent'),
+  GlobalVar('Phaser4'),
   BackgroundColor(0x2d2d2d),
   Scenes(Demo)
 );
+
+*/
